@@ -42,11 +42,19 @@ las versiones `*_clean`.
 
 ## Cómo ejecutar
 
+> **Nota:** el `.venv` no vive dentro de esta carpeta porque la ruta del proyecto (anidada en
+> OneDrive, con nombres largos en español) supera el límite de longitud de ruta de Windows y
+> rompe la instalación de paquetes. En su lugar se usa el entorno compartido `C:\Ambientes\venv`.
+
 ```bash
-python -m venv .venv
-.venv\Scripts\activate       # Windows
-pip install -r requirements.txt
-jupyter notebook notebooks/challenge02_geo_temporal_redes.ipynb
+# Instalar dependencias en el entorno compartido
+C:\Ambientes\venv\Scripts\python.exe -m pip install -r requirements.txt
+
+# Registrar el kernel de Jupyter (una sola vez)
+C:\Ambientes\venv\Scripts\python.exe -m ipykernel install --user --name=theoutliers-challenge-03 --display-name "Python (theoutliers-challenge-03)"
+
+# Abrir el notebook (selecciona el kernel "Python (theoutliers-challenge-03)")
+C:\Ambientes\venv\Scripts\jupyter.exe notebook notebooks/challenge02_geo_temporal_redes.ipynb
 ```
 
 ## Checklist de entrega (`docs/Lecture_03_checklist.pdf`)
@@ -70,13 +78,14 @@ jupyter notebook notebooks/challenge02_geo_temporal_redes.ipynb
 
 **Plazo de entrega:** 07 de febrero de 2026 (23:59 COT).
 
-## Publicar el repositorio en GitHub
+## Repositorio en GitHub
 
-Este repo se inicializó localmente. Para conectarlo a un remoto en GitHub:
+Ya publicado en [github.com/daniel95amaya/theoutliers-challenge-03](https://github.com/daniel95amaya/theoutliers-challenge-03).
+
+Pasos seguidos (sin GitHub CLI, que no estaba instalado): se creó el repo vacío manualmente en
+github.com (sin README/licencia inicial), se agregó como remoto y se hizo el push inicial:
 
 ```bash
-gh repo create theoutliers-challenge-03 --private --source=. --remote=origin
+git remote add origin https://github.com/daniel95amaya/theoutliers-challenge-03.git
 git push -u origin main
 ```
-
-(o crear el repo manualmente en github.com y luego `git remote add origin <url>` seguido de `git push -u origin main`).

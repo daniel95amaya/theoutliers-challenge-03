@@ -6,3 +6,6 @@ scipy
 statsmodels
 networkx
 nbformat
+jupyter
+ipykernel
+nbconvert
