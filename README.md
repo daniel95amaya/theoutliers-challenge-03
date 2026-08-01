@@ -1,0 +1,82 @@
+# Challenge 02 — Inteligencia Geo-Temporal y de Redes
+
+**TechLogistics S.A. — Optimización de Activos Críticos**
+Maestría en Ciencia de los Datos y Analítica · EAFIT · Periodo 2026-1
+Docente: Jorge Iván Padilla-Buriticá
+
+## Briefing de negocio
+
+TechLogistics S.A. (ficticia) enfrenta un problema de visibilidad: los datos de la cadena
+de frío (agroindustria) y de la red eléctrica están georreferenciados pero desconectados.
+Este proyecto busca responder, para la junta directiva:
+
+1. **Grafos** — ¿Cómo se propaga el ruido en la red de sensores/subestaciones?
+2. **Geoespacial** — ¿Dónde se localizan los puntos críticos (biomasa baja, anomalías térmicas)?
+3. **Series de tiempo** — ¿Cuál es el pronóstico de carga (demanda energética)?
+
+El análisis sigue la metodología CRISP-DM y cubre cuatro fases: comprensión geo-temporal
+de los datos, procesamiento de señales, análisis de grafos/topología, y modelado con
+recomendaciones de negocio (ver `docs/Lecture_03_Challenge.pdf`).
+
+## Datasets
+
+| Archivo | Descripción |
+|---|---|
+| `data/agro_clean.csv` / `agro_noise.csv` | Monitoreo agroindustrial (2000 registros, 14 columnas): variables hídricas (Agro_1-3), radiación PAR (Agro_4), índices bióticos NDVI/biomasa I(1) (Agro_5-7), suelo/viento estacionarias (Agro_8-10), coordenadas (oriente antioqueño) y topología de red mesh (`Source_Node`/`Target_Node`). |
+| `data/ener_clean.csv` / `ener_noise.csv` | Red eléctrica nacional (2000 registros, 14 columnas): mercado spot demanda/precio/temperatura (Ener_1-3), generación eólica cíclica (Ener_4), factores macro I(1) costo de gas/CO2 (Ener_5-7), calidad de potencia estacionaria frecuencia/voltaje/factor de potencia (Ener_8-10), coordenadas de subestaciones y topología (`Source_Node`/`Target_Node`). |
+
+Diccionario completo de variables en `docs/Lecture_03_dictionary.pdf`. Las versiones
+`*_noise` inyectan AWGN (ruido blanco temporal, SNR 5–15 dB) y jitter GPS geoespacial sobre
+las versiones `*_clean`.
+
+## Estructura del repositorio
+
+```
+├── data/                # los 4 CSV (clean/noise de agro y energía)
+├── docs/                # PDFs del enunciado, checklist de entrega y diccionario de datos
+├── notebooks/           # notebook principal del análisis
+├── reports/             # informe técnico ejecutivo (PDF) para la junta directiva
+├── requirements.txt
+└── .gitignore
+```
+
+## Cómo ejecutar
+
+```bash
+python -m venv .venv
+.venv\Scripts\activate       # Windows
+pip install -r requirements.txt
+jupyter notebook notebooks/challenge02_geo_temporal_redes.ipynb
+```
+
+## Checklist de entrega (`docs/Lecture_03_checklist.pdf`)
+
+- [ ] Repositorio en GitHub con historial de commits progresivo
+- [ ] Notebook (.ipynb) documentado — cada celda de código precedida por Markdown explicativo
+- [ ] Informe Técnico (PDF) que responde las preguntas de negocio con evidencia gráfica
+
+**Hitos técnicos:**
+
+- [ ] Series de Tiempo: test ADF, diferenciación I(1) antes de ARIMA
+- [ ] Procesamiento de Señales: FFT/espectrograma, filtro Butterworth/media móvil
+- [ ] Grafos: centralidad de grado y betweenness, nodo crítico identificado
+- [ ] Geoespacial: mapa `scatter_mapbox` relacionando ubicación y variables del sensor
+
+**Preguntas de negocio (Fase 4):**
+
+- [ ] P1 — Causalidad de Granger (Factor de Potencia vs. Voltaje) e impacto de falla del nodo crítico
+- [ ] P2 — Optimización geo-agrónoma e inversión en infraestructura hídrica
+- [ ] P3 — ARIMAX de demanda energética con centralidad de nodo como exógena
+
+**Plazo de entrega:** 07 de febrero de 2026 (23:59 COT).
+
+## Publicar el repositorio en GitHub
+
+Este repo se inicializó localmente. Para conectarlo a un remoto en GitHub:
+
+```bash
+gh repo create theoutliers-challenge-03 --private --source=. --remote=origin
+git push -u origin main
+```
+
+(o crear el repo manualmente en github.com y luego `git remote add origin <url>` seguido de `git push -u origin main`).
