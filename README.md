@@ -59,22 +59,22 @@ C:\Ambientes\venv\Scripts\jupyter.exe notebook notebooks/challenge02_geo_tempora
 
 ## Checklist de entrega (`docs/Lecture_03_checklist.pdf`)
 
-- [ ] Repositorio en GitHub con historial de commits progresivo
-- [ ] Notebook (.ipynb) documentado — cada celda de código precedida por Markdown explicativo
-- [ ] Informe Técnico (PDF) que responde las preguntas de negocio con evidencia gráfica
+- [x] Repositorio en GitHub con historial de commits progresivo
+- [x] Notebook (.ipynb) documentado — cada celda de código precedida por Markdown explicativo
+- [x] Informe Técnico (PDF) que responde las preguntas de negocio con evidencia gráfica (`reports/Informe_Tecnico_TechLogistics.pdf`)
 
 **Hitos técnicos:**
 
-- [ ] Series de Tiempo: test ADF, diferenciación I(1) antes de ARIMA
-- [ ] Procesamiento de Señales: FFT/espectrograma, filtro Butterworth/media móvil
-- [ ] Grafos: centralidad de grado y betweenness, nodo crítico identificado
-- [ ] Geoespacial: mapa `scatter_mapbox` relacionando ubicación y variables del sensor
+- [x] Series de Tiempo: test ADF, diferenciación I(1) antes de ARIMA
+- [x] Procesamiento de Señales: FFT/espectrograma, filtro Butterworth/media móvil
+- [x] Grafos: centralidad de grado y betweenness, nodo crítico identificado
+- [x] Geoespacial: mapa `scatter_mapbox` relacionando ubicación y variables del sensor
 
 **Preguntas de negocio (Fase 4):**
 
-- [ ] P1 — Causalidad de Granger (Factor de Potencia vs. Voltaje) e impacto de falla del nodo crítico
-- [ ] P2 — Optimización geo-agrónoma e inversión en infraestructura hídrica
-- [ ] P3 — ARIMAX de demanda energética con centralidad de nodo como exógena
+- [x] P1 — Causalidad de Granger (Factor de Potencia vs. Voltaje) e impacto de falla del nodo crítico
+- [x] P2 — Optimización geo-agrónoma e inversión en infraestructura hídrica
+- [x] P3 — ARIMAX de demanda energética con centralidad de nodo como exógena
 
 **Plazo de entrega:** 07 de febrero de 2026 (23:59 COT).
 
