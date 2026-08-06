@@ -1,5 +1,5 @@
 """Genera el Informe Tecnico Ejecutivo en PDF a partir de los analisis del notebook
-challenge02_geo_temporal_redes.ipynb. Recalcula los resultados directamente sobre los
+challenge03_geo_temporal_redes.ipynb. Recalcula los resultados directamente sobre los
 CSV en data/ para que el reporte sea reproducible sin depender del notebook ejecutado.
 
 Uso: C:\\Ambientes\\venv\\Scripts\\python.exe reports/generate_report.py
@@ -77,7 +77,7 @@ def cover_page(pdf):
     fig.text(0.5, 0.50, "Optimización de Activos Críticos — TechLogistics S.A.", fontsize=12,
              color="#B9C6E0", ha="center")
     fig.add_artist(plt.Line2D([0.25, 0.75], [0.44, 0.44], color=ACCENT, linewidth=1.5, transform=fig.transFigure))
-    fig.text(0.5, 0.38, "Challenge 02 — Fundamentos en Ciencia de Datos", fontsize=10.5, color="white", ha="center")
+    fig.text(0.5, 0.38, "Challenge 03 — Fundamentos en Ciencia de Datos", fontsize=10.5, color="white", ha="center")
     fig.text(0.5, 0.34, "Maestría en Ciencia de los Datos y Analítica — EAFIT", fontsize=10.5, color="white", ha="center")
     meses_es = ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio",
                 "agosto", "septiembre", "octubre", "noviembre", "diciembre"]
@@ -485,8 +485,6 @@ def main():
                 "inversiones regionales; los recursos deben dirigirse por evidencia cuantitativa, no "
                 "por intuición geográfica.",
             ],
-            footer="Informe generado automáticamente a partir de data/*.csv — ver notebook completo "
-                   "en notebooks/challenge02_geo_temporal_redes.ipynb para el detalle metodológico.",
         )
 
     print(f"Reporte generado en: {OUT_PATH}")

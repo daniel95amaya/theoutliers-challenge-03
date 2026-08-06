@@ -1,12 +1,20 @@
-# Challenge 02 — Inteligencia Geo-Temporal y de Redes
+# Challenge 03 — Inteligencia Geo-Temporal y de Redes
 
 **TechLogistics S.A. — Optimización de Activos Críticos**
-Maestría en Ciencia de los Datos y Analítica · EAFIT · Periodo 2026-1
+Maestría en Ciencia de los Datos y Analítica · EAFIT · Periodo 2026-2
 Docente: Jorge Iván Padilla-Buriticá
+
+**Integrantes del equipo:**
+ 
+| Nombre completo | Cédula         |
+| --------------- | -------------- |
+| Daniel Amaya Yepes      | 1037646508 |
+| Daniel Santiago Cadavid      | 1000646110 |
+| Luis Camilo Valencia      | 1037670493 |
 
 ## Briefing de negocio
 
-TechLogistics S.A. (ficticia) enfrenta un problema de visibilidad: los datos de la cadena
+TechLogistics S.A. enfrenta un problema de visibilidad: los datos de la cadena
 de frío (agroindustria) y de la red eléctrica están georreferenciados pero desconectados.
 Este proyecto busca responder, para la junta directiva:
 
@@ -42,50 +50,62 @@ las versiones `*_clean`.
 
 ## Cómo ejecutar
 
-> **Nota:** el `.venv` no vive dentro de esta carpeta porque la ruta del proyecto (anidada en
-> OneDrive, con nombres largos en español) supera el límite de longitud de ruta de Windows y
-> rompe la instalación de paquetes. En su lugar se usa el entorno compartido `C:\Ambientes\venv`.
-
 ```bash
 # Instalar dependencias en el entorno compartido
-C:\Ambientes\venv\Scripts\python.exe -m pip install -r requirements.txt
+python.exe -m pip install -r requirements.txt
 
 # Registrar el kernel de Jupyter (una sola vez)
-C:\Ambientes\venv\Scripts\python.exe -m ipykernel install --user --name=theoutliers-challenge-03 --display-name "Python (theoutliers-challenge-03)"
+python.exe -m ipykernel install --user --name=theoutliers-challenge-03 --display-name "Python (theoutliers-challenge-03)"
 
 # Abrir el notebook (selecciona el kernel "Python (theoutliers-challenge-03)")
-C:\Ambientes\venv\Scripts\jupyter.exe notebook notebooks/challenge02_geo_temporal_redes.ipynb
+jupyter.exe notebook notebooks/challenge03_geo_temporal_redes.ipynb
 ```
 
-## Checklist de entrega (`docs/Lecture_03_checklist.pdf`)
+## Conclusiones Ejecutivas y Recomendaciones
 
-- [x] Repositorio en GitHub con historial de commits progresivo
-- [x] Notebook (.ipynb) documentado — cada celda de código precedida por Markdown explicativo
-- [x] Informe Técnico (PDF) que responde las preguntas de negocio con evidencia gráfica (`reports/Informe_Tecnico_TechLogistics.pdf`)
+_Síntesis para la junta directiva de TechLogistics S.A.: hallazgos clave de geoespacial, señales, grafos y modelado, y recomendaciones accionables._
 
-**Hitos técnicos:**
+**1. No hay "zonas geográficas" problemáticas, el problema es puntual, no regional.**
+Tanto la biomasa baja (NDVI, Tarea 1) como el cruce NDVI/exposición al viento (P2) muestran
+que la ubicación **no** explica la variabilidad observada (variación entre celdas
+espaciales ≈0.047 frente a ≈0.38 a nivel de registro; correlación NDVI-viento ≈ -0.0007).
+**Recomendación:** descartar inversión regional en infraestructura hídrica; priorizar los
+~132 puntos de monitoreo individuales identificados que combinan NDVI bajo y alta
+exposición al viento, con soluciones puntuales de bajo capex (microaspersión, cortavientos).
 
-- [x] Series de Tiempo: test ADF, diferenciación I(1) antes de ARIMA
-- [x] Procesamiento de Señales: FFT/espectrograma, filtro Butterworth/media móvil
-- [x] Grafos: centralidad de grado y betweenness, nodo crítico identificado
-- [x] Geoespacial: mapa `scatter_mapbox` relacionando ubicación y variables del sensor
+**2. El ruido de sensores es corregible y con impacto medible en la capacidad predictiva.**
+El ruido inyectado (SNR 5–12 dB) es ruido blanco que se concentra fuera de la banda del
+ciclo real de la señal (`f > 0.02` ciclos/muestra, Tarea 3). Un filtro Butterworth simple
+(orden 4, `Wn≈0.01`) reduce el RMSE en ~75% y mejora en la misma magnitud el error de un
+pronóstico AR(1) evaluado contra la verdad de terreno (Tarea 4). **Recomendación:**
+estandarizar un pipeline de filtrado paso-bajo antes de cualquier modelo predictivo que
+consuma estas variables, especialmente humedad relativa (`Agro_3`) y variables similares.
 
-**Preguntas de negocio (Fase 4):**
+**3. La red eléctrica tiene un único punto de alto impacto: el nodo 119.**
+La red de subestaciones es bipartita de un solo salto (20 `Source_Node` → 50
+`Target_Node`, sin encadenamientos), por lo que la Betweenness Centrality no discrimina
+(es 0 para los 70 nodos). Por centralidad de grado, el nodo **119** alimenta a 49 de las 50
+subestaciones destino. El análisis de bridges muestra que **no existen
+aristas puente** en la red (todo `Target_Node` tiene ≥13 fuentes posibles), por lo que
+ningún `Target_Node` quedaría totalmente aislado, pero sí perdería capacidad/redundancia
+de forma simultánea y generalizada si el nodo 119 fallara. Además, existe evidencia de
+causalidad de Granger rezagada (Factor de Potencia → Voltaje, lags 4–10), por lo que una
+perturbación en el nodo 119 podría propagarse con rezago hacia inestabilidad de voltaje.
+**Recomendación:** priorizar redundancia N-1 (fuente de respaldo) específicamente en el
+nodo 119 antes que en cualquier otro punto de la topología.
 
-- [x] P1 — Causalidad de Granger (Factor de Potencia vs. Voltaje) e impacto de falla del nodo crítico
-- [x] P2 — Optimización geo-agrónoma e inversión en infraestructura hídrica
-- [x] P3 — ARIMAX de demanda energética con centralidad de nodo como exógena
+**4. La topología de red no mejora, por sí sola, el pronóstico de demanda.**
+Incluir la centralidad del nodo de origen como exógena en el ARIMAX de `Ener_1` empeora el
+AIC (+1.95) y su coeficiente no es significativo (P3). **Recomendación:** mantener el
+modelo de demanda simple (autorregresivo + temperatura); usar la centralidad de red para
+decisiones de **resiliencia operativa** (dónde invertir en redundancia), no como insumo de
+pronóstico de demanda.
 
-**Plazo de entrega:** 07 de febrero de 2026 (23:59 COT).
+**Resumen para la junta:** los datos no muestran "puntos calientes" geográficos que
+justifiquen grandes inversiones regionales; los recursos deben dirigirse a (a) un pipeline
+de filtrado de señal estandarizado, (b) redundancia eléctrica focalizada en el nodo 119, y
+(c) soluciones agronómicas puntuales en los ~132 sensores críticos identificados.
+Todo priorizado por evidencia cuantitativa, no por intuición geográfica.
 
-## Repositorio en GitHub
-
-Ya publicado en [github.com/daniel95amaya/theoutliers-challenge-03](https://github.com/daniel95amaya/theoutliers-challenge-03).
-
-Pasos seguidos (sin GitHub CLI, que no estaba instalado): se creó el repo vacío manualmente en
-github.com (sin README/licencia inicial), se agregó como remoto y se hizo el push inicial:
-
-```bash
-git remote add origin https://github.com/daniel95amaya/theoutliers-challenge-03.git
-git push -u origin main
-```
+Detalle metodológico completo en `notebooks/` y en el informe técnico
+(`reports/Informe_Tecnico_TechLogistics.pdf`).
