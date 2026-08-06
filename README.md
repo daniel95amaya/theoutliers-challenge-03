@@ -41,7 +41,7 @@ las versiones `*_clean`.
 
 ```
 ├── data/                # los 4 CSV (clean/noise de agro y energía)
-├── docs/                # PDFs del enunciado, checklist de entrega y diccionario de datos
+├── docs/                # PDFs del enunciado, checklist de entrega, diccionario de datos y declaración de uso ético de IA
 ├── notebooks/           # notebook principal del análisis
 ├── reports/             # informe técnico ejecutivo (PDF) para la junta directiva
 ├── requirements.txt
@@ -109,3 +109,10 @@ Todo priorizado por evidencia cuantitativa, no por intuición geográfica.
 
 Detalle metodológico completo en `notebooks/` y en el informe técnico
 (`reports/Informe_Tecnico_TechLogistics.pdf`).
+
+## Uso ético de IA
+
+Este proyecto se apoyó en un asistente de IA (Claude Code) para la implementación técnica.
+El equipo revisó, cuestionó y solicitó ajustes sobre cada resultado antes de aceptarlo — el
+detalle de este proceso y el alcance del uso de IA está documentado en
+[`docs/Declaracion_Uso_IA.md`](docs/Declaracion_Uso_IA.md).
